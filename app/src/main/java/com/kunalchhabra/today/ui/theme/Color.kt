@@ -36,3 +36,20 @@ val OnBackgroundLight = Color.Black
 // On Surface Colors
 val OnSurfaceDark = Color.White
 val OnSurfaceLight = Color.Black
+
+// Blue Colors
+val BluePrimary = Color(0xFF42A5F5)  // Adjusted to match the blue palette
+val BluePrimaryLight = Color(0xFF80D6FF)  // Slightly lighter shade for better contrast
+val BluePrimaryCard = Color(0xFFB3E5FC)  // Slightly lighter shade for better contrast
+val BluePrimaryDark = Color(0xFF0077C2)  // Slightly darker shade for better contrast
+
+val BlueSecondary = Color(0xFF2196F3)  // Consistent with the primary but slightly different hue
+val BlueSecondaryLight = Color(0xFF64B5F6)  // Slightly lighter shade
+val BlueSecondaryDark = Color(0xFF1976D2)  // Slightly darker shade
+
+// On Blue Colors
+val OnBluePrimary = Color.White
+val OnBlueSecondary = Color.White
+
+val OnBlueTertiaryDark = Color.White
+val OnBlueTertiaryLight = Color.Black

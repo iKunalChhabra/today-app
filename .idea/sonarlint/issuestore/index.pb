@@ -138,3 +138,13 @@ l
 <app/src/main/java/com/kunalchhabra/today/TodayApplication.kt,f/d/fd730c227abc54efa95837eff9aa97b5160cc68e
 w
 G.idea/sonarlint/issuestore/f/9/f9f446d1b67c471ff8dbd4ef002130e9978fa4f5,0/0/00e05b47b1640fa0727b59bb62a022154c52ee21
+r
+Bapp/src/main/java/com/kunalchhabra/today/model/ThemePreferences.kt,e/0/e019ca42e351ccdc3c880a32cdb5b31db9328db1
+t
+Dapp/src/main/java/com/kunalchhabra/today/data/ThemePreferencesDao.kt,f/2/f21171026d2dcbe15d6023160db5c134265a54ba
+
+Qapp/src/main/java/com/kunalchhabra/today/repository/ThemePreferencesRepository.kt,3/0/30f388222f2bd6330aa039b677414c3dc55f6300
+o
+?app/src/main/java/com/kunalchhabra/today/data/ThemeViewModel.kt,9/5/956ecd29fe6019d90125fc85c3ddf3ddb987740d
+x
+Happ/src/main/java/com/kunalchhabra/today/model/ThemePreferencesEntity.kt,6/6/6667348b8f3c9ea4cc25349631745973b9fcf9b6

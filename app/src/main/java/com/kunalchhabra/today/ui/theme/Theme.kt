@@ -23,6 +23,7 @@ val ItimFontFamily = FontFamily(
     Font(R.font.itim, FontWeight.Normal)
 )
 
+// Pink Color Schemes
 private val PinkDarkColorScheme = darkColorScheme(
     primary = PinkPrimaryDark,
     secondary = PinkSecondaryDark,
@@ -49,10 +50,40 @@ private val PinkLightColorScheme = lightColorScheme(
     onSurface = OnSurfaceLight
 )
 
+// Blue Color Schemes
+private val BlueDarkColorScheme = darkColorScheme(
+    primary = BluePrimaryDark,
+    secondary = BlueSecondaryDark,
+    tertiary = BlueSecondaryDark,
+    background = BackgroundDark,
+    surface = SurfaceDark,
+    onPrimary = OnBluePrimary,
+    onSecondary = OnBlueSecondary,
+    onTertiary = OnBlueTertiaryDark,
+    onBackground = OnBackgroundDark,
+    onSurface = OnSurfaceDark
+)
+
+private val BlueLightColorScheme = lightColorScheme(
+    primary = BluePrimary,
+    secondary = BlueSecondary,
+    tertiary = BlueSecondaryLight,
+    background = BackgroundLight,
+    surface = SurfaceLight,
+    onPrimary = OnBluePrimary,
+    onSecondary = OnBlueSecondary,
+    onTertiary = OnBlueTertiaryLight,
+    onBackground = OnBackgroundLight,
+    onSurface = OnSurfaceLight
+)
+
+var THEME_COLOR_CARD = PinkPrimaryCard
+
 @Composable
 fun TodayTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
+    darkTheme: Boolean,
     dynamicColor: Boolean = false, // Disable dynamic color
+    useBlueTheme: Boolean, // New parameter to toggle blue theme
     content: @Composable () -> Unit
 ) {
     val colorScheme = when {
@@ -60,8 +91,9 @@ fun TodayTheme(
             val context = LocalContext.current
             if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
         }
-        darkTheme -> PinkDarkColorScheme
-        else -> PinkLightColorScheme
+
+        darkTheme -> if (useBlueTheme) BlueDarkColorScheme else PinkDarkColorScheme
+        else -> if (useBlueTheme) BlueLightColorScheme else PinkLightColorScheme
     }
 
     val view = LocalView.current
@@ -78,4 +110,8 @@ fun TodayTheme(
         typography = Typography,
         content = content
     )
+
+    if(useBlueTheme)
+        THEME_COLOR_CARD = BluePrimaryCard
+    else THEME_COLOR_CARD = PinkPrimaryCard
 }

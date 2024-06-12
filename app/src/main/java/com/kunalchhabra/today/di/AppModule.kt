@@ -2,6 +2,7 @@ package com.kunalchhabra.today.di
 
 import android.content.Context
 import androidx.room.Room
+import com.kunalchhabra.today.data.ThemePreferencesDao
 import com.kunalchhabra.today.data.TodoDao
 import com.kunalchhabra.today.data.TodoDatabase
 import dagger.Module
@@ -19,6 +20,12 @@ object AppModule {
     @Provides
     fun provideTodoDao(database: TodoDatabase): TodoDao {
         return database.todoDao()
+    }
+
+    @Provides
+    @Singleton
+    fun provideThemePreferencesDao(database: TodoDatabase): ThemePreferencesDao {
+        return database.themePreferencesDao()
     }
 
     @Singleton
