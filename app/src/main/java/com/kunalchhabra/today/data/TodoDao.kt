@@ -27,7 +27,7 @@ interface TodoDao {
     suspend fun update(todoEntity: TodoEntity)
 
     @Query("DELETE FROM todoentity WHERE id = :id")
-    suspend fun deleteById(id: Int)
+    suspend fun deleteById(id: java.util.UUID)
 
     @Query("DELETE FROM todoentity WHERE title = :title")
     suspend fun deleteByTitle(title: String)

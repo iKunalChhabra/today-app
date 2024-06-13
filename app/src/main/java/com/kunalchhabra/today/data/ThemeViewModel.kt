@@ -26,17 +26,26 @@ class ThemeViewModel @Inject constructor(
     private fun fetchThemePreferences() {
         viewModelScope.launch {
             _themePreferences.value =
-                repository.getThemePreferences() ?: ThemePreferencesEntity(useBlueTheme = false, isDarkTheme = false)
+                repository.getThemePreferences() ?: ThemePreferencesEntity(
+                    themeColor = "Pink",
+                    isDarkTheme = false,
+                    dynamicColor = false
+                )
         }
     }
 
-    fun saveThemePreferences(useBlueTheme: Boolean, isDarkTheme: Boolean) {
+    fun saveThemePreferences(themeColor: String, isDarkTheme: Boolean, dynamicColor: Boolean) {
         viewModelScope.launch {
             repository.saveThemePreferences(
                 _themePreferences.value?.copy(
-                    useBlueTheme = useBlueTheme,
-                    isDarkTheme = isDarkTheme
-                ) ?: ThemePreferencesEntity(useBlueTheme = useBlueTheme, isDarkTheme = isDarkTheme)
+                    themeColor = themeColor,
+                    isDarkTheme = isDarkTheme,
+                    dynamicColor = dynamicColor
+                ) ?: ThemePreferencesEntity(
+                    themeColor = themeColor,
+                    isDarkTheme = isDarkTheme,
+                    dynamicColor = dynamicColor
+                )
             )
             fetchThemePreferences()
         }

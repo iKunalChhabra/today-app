@@ -41,6 +41,13 @@ class TodoViewModel @Inject constructor(private val repository: TodoRepository) 
         }
     }
 
+    fun deleteTodo(todoEntity: TodoEntity) {
+        viewModelScope.launch {
+            repository.deleteTodoById(todoEntity.id)
+            fetchTodos()  // Update the list after deleting a todo
+        }
+    }
+
     fun markAsDone(todoEntity: TodoEntity) {
         viewModelScope.launch {
             repository.updateTodo(todoEntity)

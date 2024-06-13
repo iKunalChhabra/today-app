@@ -77,13 +77,94 @@ private val BlueLightColorScheme = lightColorScheme(
     onSurface = OnSurfaceLight
 )
 
+// Yellow Color Schemes
+private val YellowDarkColorScheme = darkColorScheme(
+    primary = YellowPrimaryDark,
+    secondary = YellowSecondaryDark,
+    tertiary = YellowSecondaryDark,
+    background = BackgroundDark,
+    surface = SurfaceDark,
+    onPrimary = OnYellowPrimary,
+    onSecondary = OnYellowSecondary,
+    onTertiary = OnYellowTertiaryDark,
+    onBackground = OnBackgroundDark,
+    onSurface = OnSurfaceDark
+)
+
+private val YellowLightColorScheme = lightColorScheme(
+    primary = YellowPrimary,
+    secondary = YellowSecondary,
+    tertiary = YellowSecondaryLight,
+    background = BackgroundLight,
+    surface = SurfaceLight,
+    onPrimary = OnYellowPrimary,
+    onSecondary = OnYellowSecondary,
+    onTertiary = OnYellowTertiaryLight,
+    onBackground = OnBackgroundLight,
+    onSurface = OnSurfaceLight
+)
+
+// Purple Color Schemes
+private val PurpleDarkColorScheme = darkColorScheme(
+    primary = PurplePrimaryDark,
+    secondary = PurpleSecondaryDark,
+    tertiary = PurpleSecondaryDark,
+    background = BackgroundDark,
+    surface = SurfaceDark,
+    onPrimary = OnPurplePrimary,
+    onSecondary = OnPurpleSecondary,
+    onTertiary = OnPurpleTertiaryDark,
+    onBackground = OnBackgroundDark,
+    onSurface = OnSurfaceDark
+)
+
+private val PurpleLightColorScheme = lightColorScheme(
+    primary = PurplePrimary,
+    secondary = PurpleSecondary,
+    tertiary = PurpleSecondaryLight,
+    background = BackgroundLight,
+    surface = SurfaceLight,
+    onPrimary = OnPurplePrimary,
+    onSecondary = OnPurpleSecondary,
+    onTertiary = OnPurpleTertiaryLight,
+    onBackground = OnBackgroundLight,
+    onSurface = OnSurfaceLight
+)
+
+// Green Color Schemes
+private val GreenDarkColorScheme = darkColorScheme(
+    primary = GreenPrimaryDark,
+    secondary = GreenSecondaryDark,
+    tertiary = GreenSecondaryDark,
+    background = BackgroundDark,
+    surface = SurfaceDark,
+    onPrimary = OnGreenPrimary,
+    onSecondary = OnGreenSecondary,
+    onTertiary = OnGreenTertiaryDark,
+    onBackground = OnBackgroundDark,
+    onSurface = OnSurfaceDark
+)
+
+private val GreenLightColorScheme = lightColorScheme(
+    primary = GreenPrimary,
+    secondary = GreenSecondary,
+    tertiary = GreenSecondaryLight,
+    background = BackgroundLight,
+    surface = SurfaceLight,
+    onPrimary = OnGreenPrimary,
+    onSecondary = OnGreenSecondary,
+    onTertiary = OnGreenTertiaryLight,
+    onBackground = OnBackgroundLight,
+    onSurface = OnSurfaceLight
+)
+
 var THEME_COLOR_CARD = PinkPrimaryCard
 
 @Composable
 fun TodayTheme(
     darkTheme: Boolean,
     dynamicColor: Boolean = false, // Disable dynamic color
-    useBlueTheme: Boolean, // New parameter to toggle blue theme
+    themeColor: String = "Pink", // New parameter to toggle themes
     content: @Composable () -> Unit
 ) {
     val colorScheme = when {
@@ -91,9 +172,20 @@ fun TodayTheme(
             val context = LocalContext.current
             if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
         }
-
-        darkTheme -> if (useBlueTheme) BlueDarkColorScheme else PinkDarkColorScheme
-        else -> if (useBlueTheme) BlueLightColorScheme else PinkLightColorScheme
+        darkTheme -> when (themeColor) {
+            "Blue" -> BlueDarkColorScheme
+            "Yellow" -> YellowDarkColorScheme
+            "Purple" -> PurpleDarkColorScheme
+            "Green" -> GreenDarkColorScheme
+            else -> PinkDarkColorScheme
+        }
+        else -> when (themeColor) {
+            "Blue" -> BlueLightColorScheme
+            "Yellow" -> YellowLightColorScheme
+            "Purple" -> PurpleLightColorScheme
+            "Green" -> GreenLightColorScheme
+            else -> PinkLightColorScheme
+        }
     }
 
     val view = LocalView.current
@@ -111,7 +203,11 @@ fun TodayTheme(
         content = content
     )
 
-    if(useBlueTheme)
-        THEME_COLOR_CARD = BluePrimaryCard
-    else THEME_COLOR_CARD = PinkPrimaryCard
+    THEME_COLOR_CARD = when (themeColor) {
+        "Blue" -> BluePrimaryCard
+        "Yellow" -> YellowPrimaryCard
+        "Purple" -> PurplePrimaryCard
+        "Green" -> GreenPrimaryCard
+        else -> PinkPrimaryCard
+    }
 }

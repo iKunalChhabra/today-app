@@ -1,15 +1,18 @@
-package com.kunalchhabra.today.screen
-
 import android.widget.Toast
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.horizontalScroll
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.*
+import androidx.compose.foundation.gestures.AnchoredDraggableState
+import androidx.compose.foundation.gestures.Orientation
+import androidx.compose.foundation.gestures.anchoredDraggable
+import androidx.compose.foundation.gestures.detectHorizontalDragGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.*
@@ -20,11 +23,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.kunalchhabra.today.data.TodoViewModel
@@ -32,16 +37,19 @@ import com.kunalchhabra.today.data.addTodoToast
 import com.kunalchhabra.today.data.motivationalToast
 import com.kunalchhabra.today.model.TodoEntity
 import com.kunalchhabra.today.ui.theme.*
+import kotlin.math.roundToInt
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun HomeScreen(
     todoViewModel: TodoViewModel,
-    useBlueTheme: Boolean,
-    onBlueThemeChange: (Boolean) -> Unit,
+    themeColor: String,
+    onThemeColorChange: (String) -> Unit,
     isDarkTheme: Boolean,
     onDarkThemeChange: (Boolean) -> Unit,
-    onSaveThemePreferences: (Boolean, Boolean) -> Unit
+    dynamicColor: Boolean,
+    onDynamicColorChange: (Boolean) -> Unit,
+    onSaveThemePreferences: (String, Boolean, Boolean) -> Unit
 ) {
     val addTodoClicked = remember { mutableStateOf(false) }
     val focusRequester = remember { FocusRequester() }
@@ -53,15 +61,17 @@ fun HomeScreen(
                     showAddTodo = addTodoClicked,
                     focusRequester = focusRequester,
                     todoViewModel = todoViewModel,
-                    useBlueTheme = useBlueTheme,
-                    onBlueThemeChange = onBlueThemeChange,
+                    themeColor = themeColor,
+                    onThemeColorChange = onThemeColorChange,
                     isDarkTheme = isDarkTheme,
                     onDarkThemeChange = onDarkThemeChange,
+                    dynamicColor = dynamicColor,
+                    onDynamicColorChange = onDynamicColorChange,
                     onSaveThemePreferences = onSaveThemePreferences
                 )
             },
             floatingActionButton = {
-                AddTodo(isDarkTheme = isDarkTheme){
+                AddTodo(isDarkTheme = isDarkTheme) {
                     addTodoClicked.value = true
                 }
             }
@@ -76,11 +86,13 @@ fun TopBar(
     showAddTodo: MutableState<Boolean>,
     focusRequester: FocusRequester,
     todoViewModel: TodoViewModel,
-    useBlueTheme: Boolean,
-    onBlueThemeChange: (Boolean) -> Unit,
+    themeColor: String,
+    onThemeColorChange: (String) -> Unit,
     isDarkTheme: Boolean,
     onDarkThemeChange: (Boolean) -> Unit,
-    onSaveThemePreferences: (Boolean, Boolean) -> Unit
+    dynamicColor: Boolean,
+    onDynamicColorChange: (Boolean) -> Unit,
+    onSaveThemePreferences: (String, Boolean, Boolean) -> Unit
 ) {
     val newTodoValue = remember { mutableStateOf("") }
     val context = LocalContext.current
@@ -112,7 +124,7 @@ fun TopBar(
                 keyboardActions = KeyboardActions(
                     onDone = {
                         showAddTodo.value = false
-                        if (newTodoValue.value.isNotBlank()){
+                        if (newTodoValue.value.isNotBlank()) {
                             todoViewModel.addTodo(
                                 TodoEntity(
                                     title = newTodoValue.value.trim(),
@@ -145,8 +157,17 @@ fun TopBar(
                     modifier = Modifier
                         .size(32.dp)
                         .clickable {
-                            onBlueThemeChange(!useBlueTheme)
-                            onSaveThemePreferences(!useBlueTheme, isDarkTheme)
+                            // Toggle between theme colors
+                            val newThemeColor = when (themeColor) {
+                                "Pink" -> "Blue"
+                                "Blue" -> "Yellow"
+                                "Yellow" -> "Purple"
+                                "Purple" -> "Green"
+                                "Green" -> "Pink"
+                                else -> "Pink"
+                            }
+                            onThemeColorChange(newThemeColor)
+                            onSaveThemePreferences(newThemeColor, isDarkTheme, dynamicColor)
                         }
                 )
                 Icon(
@@ -156,7 +177,7 @@ fun TopBar(
                         .size(32.dp)
                         .clickable {
                             onDarkThemeChange(!isDarkTheme)
-                            onSaveThemePreferences(useBlueTheme, !isDarkTheme)
+                            onSaveThemePreferences(themeColor, !isDarkTheme, dynamicColor)
                         }
                 )
                 Icon(
@@ -167,7 +188,7 @@ fun TopBar(
                         .size(32.dp)
                         .clickable {
                             todoViewModel.deleteDoneTodos()
-                            Toast.makeText(context, "All tasks deleted!", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(context, "All completed tasks deleted!", Toast.LENGTH_SHORT).show()
                         }
                 )
             }
@@ -177,7 +198,7 @@ fun TopBar(
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun AddTodo(isDarkTheme:Boolean, onClick: () -> Unit = {}) {
+fun AddTodo(isDarkTheme: Boolean, onClick: () -> Unit = {}) {
     val keyboard = LocalSoftwareKeyboardController.current
     Button(
         onClick = {
@@ -200,45 +221,78 @@ fun AddTodo(isDarkTheme:Boolean, onClick: () -> Unit = {}) {
                 imageVector = Icons.Outlined.AddCircle,
                 contentDescription = "Add Todo",
                 modifier = Modifier.size(72.dp),
-                tint = if(isDarkTheme) SurfaceDark else SurfaceLight
+                tint = if (isDarkTheme) SurfaceDark else SurfaceLight
             )
         }
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TodoItem(todo: TodoEntity, todoViewModel: TodoViewModel) {
     var isDone by remember { mutableStateOf(todo.isDone) }
     val context = LocalContext.current
 
-    Card(
-        modifier = Modifier
-            .padding(12.dp)
-            .fillMaxWidth(),
-        colors = CardDefaults.cardColors(
-            containerColor = THEME_COLOR_CARD,
+    SwipeToDismiss(
+        state = rememberDismissState(
+            confirmValueChange = {
+                if (it == DismissValue.DismissedToStart) {
+                    todoViewModel.deleteTodo(todo)
+                    Toast.makeText(context, "Task deleted!", Toast.LENGTH_SHORT).show()
+                    true
+                } else {
+                    false
+                }
+            }
         ),
-    ) {
-        Row(
-            modifier = Modifier.padding(16.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
-            Icon(
-                imageVector = if (isDone) Icons.Outlined.TaskAlt else Icons.Outlined.Circle,
-                tint = SurfaceDark,
-                contentDescription = "Todo",
+        directions = setOf(DismissDirection.EndToStart),
+        background = {
+            Box(
                 modifier = Modifier
-                    .size(32.dp)
-                    .clickable {
-                        isDone = !isDone
-                        todoViewModel.markAsDone(todo.copy(isDone = isDone))
-                        if (isDone) Toast.makeText(context, motivationalToast(), Toast.LENGTH_SHORT).show()
-                    }
-            )
-            ScrollableText(text = todo.title, isDone = isDone)
+                    .padding(12.dp)
+                    .fillMaxHeight()
+                    .fillMaxWidth().background(color = Color(0xFFFF6961), shape = RoundedCornerShape(16.dp)),
+                contentAlignment = Alignment.CenterEnd
+            ) {
+                Icon(
+                    imageVector = Icons.Outlined.Delete,
+                    contentDescription = "Delete Icon",
+                    tint = THEME_COLOR_CARD,
+                    modifier = Modifier.size(48.dp).padding(2.dp)
+                )
+            }
+        },
+        dismissContent = {
+            Card(
+                modifier = Modifier
+                    .padding(12.dp)
+                    .fillMaxWidth(),
+                colors = CardDefaults.cardColors(
+                    containerColor = THEME_COLOR_CARD,
+                ),
+            ) {
+                Row(
+                    modifier = Modifier.padding(16.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    Icon(
+                        imageVector = if (isDone) Icons.Outlined.TaskAlt else Icons.Outlined.Circle,
+                        tint = SurfaceDark,
+                        contentDescription = "Todo",
+                        modifier = Modifier
+                            .size(32.dp)
+                            .clickable {
+                                isDone = !isDone
+                                todoViewModel.markAsDone(todo.copy(isDone = isDone))
+                                if (isDone) Toast.makeText(context, motivationalToast(), Toast.LENGTH_SHORT).show()
+                            }
+                    )
+                    ScrollableText(text = todo.title, isDone = isDone)
+                }
+            }
         }
-    }
+    )
 }
 
 @Composable
@@ -246,7 +300,8 @@ fun ScrollableText(text: String, isDone: Boolean) {
     val scrollState = rememberScrollState()
 
     Box(
-        modifier = Modifier.horizontalScroll(scrollState)
+        modifier = Modifier
+            .horizontalScroll(scrollState)
     ) {
         Text(
             text = text,

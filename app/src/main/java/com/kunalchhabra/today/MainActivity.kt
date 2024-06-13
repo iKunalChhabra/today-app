@@ -1,5 +1,6 @@
 package com.kunalchhabra.today
 
+import HomeScreen
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -7,10 +8,8 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.*
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.kunalchhabra.today.data.*
-import com.kunalchhabra.today.screen.HomeScreen
 import com.kunalchhabra.today.ui.theme.TodayTheme
 import dagger.hilt.android.AndroidEntryPoint
-
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -21,18 +20,25 @@ class MainActivity : ComponentActivity() {
             val themePreferences by themeViewModel.themePreferences.collectAsState()
 
             if (themePreferences != null) {
-                var useBlueTheme by remember { mutableStateOf(themePreferences?.useBlueTheme ?: false) }
+                var themeColor by remember { mutableStateOf(themePreferences?.themeColor ?: "Pink") }
                 var isDarkTheme by remember { mutableStateOf(themePreferences?.isDarkTheme ?: false) }
+                var dynamicColor by remember { mutableStateOf(themePreferences?.dynamicColor ?: false) }
 
-                TodayTheme(useBlueTheme = useBlueTheme, darkTheme = isDarkTheme) {
+                TodayTheme(
+                    themeColor = themeColor,
+                    darkTheme = isDarkTheme,
+                    dynamicColor = dynamicColor
+                ) {
                     Column {
                         TodoApp(
-                            useBlueTheme = useBlueTheme,
-                            onBlueThemeChange = { useBlueTheme = it },
+                            themeColor = themeColor,
+                            onThemeColorChange = { themeColor = it },
                             isDarkTheme = isDarkTheme,
                             onDarkThemeChange = { isDarkTheme = it },
-                            onSaveThemePreferences = { blueTheme, darkTheme ->
-                                themeViewModel.saveThemePreferences(blueTheme, darkTheme)
+                            dynamicColor = dynamicColor,
+                            onDynamicColorChange = { dynamicColor = it },
+                            onSaveThemePreferences = { color, dark, dynamic ->
+                                themeViewModel.saveThemePreferences(color, dark, dynamic)
                             }
                         )
                     }
@@ -42,22 +48,25 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-
 @Composable
 fun TodoApp(
-    useBlueTheme: Boolean,
-    onBlueThemeChange: (Boolean) -> Unit,
+    themeColor: String,
+    onThemeColorChange: (String) -> Unit,
     isDarkTheme: Boolean,
     onDarkThemeChange: (Boolean) -> Unit,
-    onSaveThemePreferences: (Boolean, Boolean) -> Unit,
+    dynamicColor: Boolean,
+    onDynamicColorChange: (Boolean) -> Unit,
+    onSaveThemePreferences: (String, Boolean, Boolean) -> Unit,
     todoViewModel: TodoViewModel = viewModel(modelClass = TodoViewModel::class)
 ) {
     HomeScreen(
         todoViewModel = todoViewModel,
-        useBlueTheme = useBlueTheme,
-        onBlueThemeChange = onBlueThemeChange,
+        themeColor = themeColor,
+        onThemeColorChange = onThemeColorChange,
         isDarkTheme = isDarkTheme,
         onDarkThemeChange = onDarkThemeChange,
+        dynamicColor = dynamicColor,
+        onDynamicColorChange = onDynamicColorChange,
         onSaveThemePreferences = onSaveThemePreferences
     )
 }

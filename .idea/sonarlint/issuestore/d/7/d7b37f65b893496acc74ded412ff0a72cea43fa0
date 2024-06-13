@@ -1,2 +1,12 @@
 
-kotlin:S107K"GThis function has 8 parameters, which is greater than the 7 authorized.(Åùÿ³úÿÿÿÿ8ì¯´è€2J$52781425-3fbe-4e50-ace3-0187d563ff40
+akotlin:S1172^"=Remove this unused function parameter "onDynamicColorChange".(·¹ùúÿÿÿÿ8öƒôˆ2
+jkotlin:S107,"GThis function has 8 parameters, which is greater than the 7 authorized.(›¼¾“üÿÿÿÿ8üƒôˆ2
+kkotlin:S107U"HThis function has 10 parameters, which is greater than the 7 authorized.(Åùÿ³úÿÿÿÿ8ıƒôˆ2
+dkotlin:S1128"Remove this unused import.(²Ù™³şÿÿÿÿ8œ¼Ãˆ2J$e8b2c323-dbf9-4577-87ca-efcd95c581cf
+dkotlin:S1128"Remove this unused import.(¿¡®ıÿÿÿÿ8œ¼Ãˆ2J$7241af64-ed0a-42b1-a6de-1ec934d0bf5e
+dkotlin:S1128"Remove this unused import.(–Ÿ˜Ùûÿÿÿÿ8œ¼Ãˆ2J$ae4bb5a5-4508-4d29-a47b-07e0397148f0
+_kotlin:S1128"Remove this unused import.(×‚ùå8œ¼Ãˆ2J$c9033f9e-e8ee-430b-b066-962fe03fdbc7
+_kotlin:S1128"Remove this unused import.(„‡Æê8œ¼Ãˆ2J$b99fdf03-61aa-4ca8-b83a-4ed6cb6c5255
+dkotlin:S1128"Remove this unused import.(ˆöüºøÿÿÿÿ8œ¼Ãˆ2J$dafee578-e10e-462d-b15e-e70f219cb973
+dkotlin:S1128 "Remove this unused import.(Õş÷©úÿÿÿÿ8œ¼Ãˆ2J$f15d233b-37eb-4a5a-b35c-acd9152d0ae5
+dkotlin:S1128("Remove this unused import.(€“ïìùÿÿÿÿ8œ¼Ãˆ2J$f7aeca64-a878-4242-b53b-d446fe903d86
