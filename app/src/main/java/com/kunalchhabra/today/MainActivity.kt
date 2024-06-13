@@ -1,6 +1,5 @@
 package com.kunalchhabra.today
 
-import HomeScreen
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -8,6 +7,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.*
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.kunalchhabra.today.data.*
+import com.kunalchhabra.today.ui.screen.HomeScreen
 import com.kunalchhabra.today.ui.theme.TodayTheme
 import dagger.hilt.android.AndroidEntryPoint
 

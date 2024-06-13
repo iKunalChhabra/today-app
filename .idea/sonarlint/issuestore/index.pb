@@ -148,3 +148,13 @@ o
 ?app/src/main/java/com/kunalchhabra/today/data/ThemeViewModel.kt,9/5/956ecd29fe6019d90125fc85c3ddf3ddb987740d
 x
 Happ/src/main/java/com/kunalchhabra/today/model/ThemePreferencesEntity.kt,6/6/6667348b8f3c9ea4cc25349631745973b9fcf9b6
+i
+9app/src/main/java/com/kunalchhabra/today/screen/TopBar.kt,e/f/ef37852e5ca1ace94afd1430785968153beb1bc9
+j
+:app/src/main/java/com/kunalchhabra/today/screen/AddTodo.kt,3/8/381cec132e99163315ccfedca7377130585f9df7
+k
+;app/src/main/java/com/kunalchhabra/today/screen/TodoList.kt,6/5/6594adcf5fd7d8d9f77ef644d8d9a57cbaaa1087
+k
+;app/src/main/java/com/kunalchhabra/today/screen/TodoItem.kt,1/7/17617916f0cf10afee03c5d00479632a94f36f99
+q
+Aapp/src/main/java/com/kunalchhabra/today/screen/ScrollableText.kt,d/f/df57af2506ef9930e850d12130d615a4b47b0ff7

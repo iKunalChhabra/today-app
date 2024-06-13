@@ -54,4 +54,11 @@ class TodoViewModel @Inject constructor(private val repository: TodoRepository) 
             fetchTodos()  // Update the list after marking as done
         }
     }
+
+    fun updateTodoTitle(todoEntity: TodoEntity, newTitle: String) {
+        viewModelScope.launch {
+            repository.updateTodo(todoEntity.copy(title = newTitle))
+            fetchTodos()  // Update the list after updating the title
+        }
+    }
 }
