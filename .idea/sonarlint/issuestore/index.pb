@@ -158,3 +158,7 @@ k
 ;app/src/main/java/com/kunalchhabra/today/screen/TodoItem.kt,1/7/17617916f0cf10afee03c5d00479632a94f36f99
 q
 Aapp/src/main/java/com/kunalchhabra/today/screen/ScrollableText.kt,d/f/df57af2506ef9930e850d12130d615a4b47b0ff7
+9
+	README.md,8/e/8ec9a00bfd09b3190ac6b22251dbb1aa95a0579d
+7
+LICENSE,0/3/0398ccd0f49298b10a3d76a47800d2ebecd49859
