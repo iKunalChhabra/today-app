@@ -5,8 +5,6 @@ D
 app/build.gradle.kts,d/2/d2a4383452aad84a18429a5844d31330a012a9e6
 j
 :app/src/main/java/com/kunalchhabra/today/ui/theme/Theme.kt,2/f/2f613480798f953afcf9380edf6de7ba82f92473
-u
-Eapp/src/main/java/com/kunalchhabra/today/data/MotivationalMessages.kt,e/e/ee7d42dce3702b0cb1d2f1860a043795c361389e
 g
 7app/src/main/java/com/kunalchhabra/today/data/toasts.kt,5/d/5d2a5d5818c83aff9b91dd27e5070d214dc38f69
 @
@@ -21,8 +19,6 @@ m
 =app/src/main/java/com/kunalchhabra/today/data/InitialTodos.kt,c/c/ccb73a0ad46d469ad17fad0b224c3f20e9b12858
 g
 7app/src/main/java/com/kunalchhabra/today/data/Toasts.kt,a/3/a339fd39c8d64f2f736aae39f87fb7f992e884ac
-d
-4app/src/main/java/com/kunalchhabra/today/TodayApp.kt,f/9/f9f446d1b67c471ff8dbd4ef002130e9978fa4f5
 h
 8app/src/main/java/com/kunalchhabra/today/di/AppModule.kt,0/3/03bbc8026301cd80777059f4e2ae2db73f78fca2
 l
@@ -33,10 +29,6 @@ h
 8app/src/main/java/com/kunalchhabra/today/data/TodoDao.kt,8/a/8aeb62b88996c7b64116d5240481148c53b33647
 u
 Eapp/src/main/java/com/kunalchhabra/today/repository/TodoRepository.kt,b/6/b6d463830c1dea5900147b4a4cd8352f2d265b1d
-p
-@app/src/main/java/com/kunalchhabra/today/screen/HomeViewModel.kt,7/5/75b637198d145d7598f83c9413ec64ca2075725e
-p
-@app/src/main/java/com/kunalchhabra/today/screen/TodoViewModel.kt,0/9/09a956991b572395619a805603c886a9cd8a48fc
 n
 >app/src/main/java/com/kunalchhabra/today/data/TodoViewModel.kt,a/2/a20851095e24c99bbb20c4ae884edb4606a9ca45
 w
@@ -138,8 +130,6 @@ l
 <app/src/main/java/com/kunalchhabra/today/TodayApplication.kt,f/d/fd730c227abc54efa95837eff9aa97b5160cc68e
 w
 G.idea/sonarlint/issuestore/f/9/f9f446d1b67c471ff8dbd4ef002130e9978fa4f5,0/0/00e05b47b1640fa0727b59bb62a022154c52ee21
-r
-Bapp/src/main/java/com/kunalchhabra/today/model/ThemePreferences.kt,e/0/e019ca42e351ccdc3c880a32cdb5b31db9328db1
 t
 Dapp/src/main/java/com/kunalchhabra/today/data/ThemePreferencesDao.kt,f/2/f21171026d2dcbe15d6023160db5c134265a54ba
 

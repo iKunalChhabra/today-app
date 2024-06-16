@@ -10,6 +10,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Circle
 import androidx.compose.material.icons.outlined.Delete
+import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material.icons.outlined.TaskAlt
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -154,7 +155,13 @@ fun TodoText(
     onDoneAction: () -> Unit
 ) {
     if (isEditing) {
-        TextField(
+        OutlinedTextField(
+            leadingIcon = {
+                Icon(
+                    imageVector = Icons.Outlined.Edit,
+                    contentDescription = "Task Edit"
+                )
+            },
             value = text,
             onValueChange = onTextChange,
             keyboardOptions = KeyboardOptions.Default.copy(

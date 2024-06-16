@@ -5,6 +5,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.runtime.*
 import androidx.compose.ui.focus.focusRequester
 import android.widget.Toast
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
@@ -16,6 +17,7 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.kunalchhabra.today.data.TodoViewModel
@@ -49,11 +51,9 @@ fun TopBar(
         modifier = Modifier
             .fillMaxWidth()
             .height(132.dp)
-            .padding(16.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceBetween
+            .padding(16.dp)
     ) {
-        if (showAddTodo.value) {
+        AnimatedVisibility(showAddTodo.value) {
             OutlinedTextField(
                 value = newTodoValue.value,
                 onValueChange = { newTodoValue.value = it },
@@ -80,7 +80,8 @@ fun TopBar(
                 ),
                 keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done)
             )
-        } else {
+        }
+        if(!showAddTodo.value) {
             Text(
                 text = "Today",
                 style = MaterialTheme.typography.headlineLarge,
@@ -88,6 +89,7 @@ fun TopBar(
                 fontFamily = ItimFontFamily,
                 fontSize = 48.sp,
             )
+            Spacer(modifier = Modifier.weight(1f))
             Row(
                 modifier = Modifier.fillMaxHeight(),
                 verticalAlignment = Alignment.CenterVertically,
@@ -129,7 +131,9 @@ fun TopBar(
                         .size(32.dp)
                         .clickable {
                             todoViewModel.deleteDoneTodos()
-                            Toast.makeText(context, "All completed tasks deleted!", Toast.LENGTH_SHORT).show()
+                            Toast
+                                .makeText(context, "All completed tasks deleted!", Toast.LENGTH_SHORT)
+                                .show()
                         }
                 )
             }

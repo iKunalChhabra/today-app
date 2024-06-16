@@ -2,14 +2,19 @@ package com.kunalchhabra.today.ui.theme
 
 import android.app.Activity
 import android.os.Build
+import androidx.compose.animation.*
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
@@ -160,6 +165,7 @@ private val GreenLightColorScheme = lightColorScheme(
 
 var THEME_COLOR_CARD = PinkPrimaryCard
 
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun TodayTheme(
     darkTheme: Boolean,
@@ -167,26 +173,29 @@ fun TodayTheme(
     themeColor: String = "Pink", // New parameter to toggle themes
     content: @Composable () -> Unit
 ) {
-    val colorScheme = when {
-        dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
-            val context = LocalContext.current
-            if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
-        }
-        darkTheme -> when (themeColor) {
-            "Blue" -> BlueDarkColorScheme
-            "Yellow" -> YellowDarkColorScheme
-            "Purple" -> PurpleDarkColorScheme
-            "Green" -> GreenDarkColorScheme
-            else -> PinkDarkColorScheme
-        }
-        else -> when (themeColor) {
-            "Blue" -> BlueLightColorScheme
-            "Yellow" -> YellowLightColorScheme
-            "Purple" -> PurpleLightColorScheme
-            "Green" -> GreenLightColorScheme
-            else -> PinkLightColorScheme
-        }
-    }
+    val colorScheme by rememberUpdatedState(
+        when {
+            dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
+                val context = LocalContext.current
+                if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
+            }
+
+            darkTheme -> when (themeColor) {
+                "Blue" -> BlueDarkColorScheme
+                "Yellow" -> YellowDarkColorScheme
+                "Purple" -> PurpleDarkColorScheme
+                "Green" -> GreenDarkColorScheme
+                else -> PinkDarkColorScheme
+            }
+
+            else -> when (themeColor) {
+                "Blue" -> BlueLightColorScheme
+                "Yellow" -> YellowLightColorScheme
+                "Purple" -> PurpleLightColorScheme
+                "Green" -> GreenLightColorScheme
+                else -> PinkLightColorScheme
+            }
+        })
 
     val view = LocalView.current
     if (!view.isInEditMode) {
@@ -197,11 +206,19 @@ fun TodayTheme(
         }
     }
 
-    MaterialTheme(
-        colorScheme = colorScheme,
-        typography = Typography,
-        content = content
-    )
+    AnimatedContent(
+        targetState = colorScheme,
+        transitionSpec = {
+            fadeIn(animationSpec = tween(700)) with fadeOut(animationSpec = tween(700))
+        }, label = ""
+    ) { targetColorScheme ->
+        MaterialTheme(
+            colorScheme = targetColorScheme,
+            typography = Typography,
+            content = content
+        )
+    }
+
 
     THEME_COLOR_CARD = when (themeColor) {
         "Blue" -> BluePrimaryCard
