@@ -84,7 +84,8 @@ fun AddTodoDialog(
     AnimatedVisibility(showAddTodo.value) {
         Dialog(
             properties = DialogProperties(dismissOnBackPress = true, dismissOnClickOutside = true),
-            onDismissRequest = { showAddTodo.value = false }
+            onDismissRequest = { showAddTodo.value = false
+                newTodoValue.value = ""}
         ) {
             Surface(
                 shape = MaterialTheme.shapes.medium,
@@ -143,7 +144,9 @@ fun AddTodoDialogActions(
         horizontalArrangement = Arrangement.End,
         modifier = Modifier.fillMaxWidth()
     ) {
-        TextButton(onClick = { showAddTodo.value = false }) {
+        TextButton(onClick = {
+            showAddTodo.value = false
+            newTodoValue.value = ""}) {
             Text("Cancel")
         }
         Spacer(modifier = Modifier.width(8.dp))
