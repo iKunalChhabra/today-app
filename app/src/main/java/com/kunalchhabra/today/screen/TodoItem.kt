@@ -27,6 +27,8 @@ import com.kunalchhabra.today.ui.theme.SurfaceDark
 import com.kunalchhabra.today.ui.theme.THEME_COLOR_CARD
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -73,6 +75,19 @@ fun TodoItem(todo: TodoEntity, todoViewModel: TodoViewModel) {
             )
         }
     )
+
+    if (isEditing) {
+        EditTodoDialog(
+            textFieldValue = textFieldValue,
+            onTextChange = { textFieldValue = it },
+            onDismissRequest = { isEditing = false },
+            onDoneAction = {
+                isEditing = false
+                todoViewModel.updateTodoTitle(todo, textFieldValue.text)
+                Toast.makeText(context, "Task updated!", Toast.LENGTH_SHORT).show()
+            }
+        )
+    }
 }
 
 @Composable
@@ -155,30 +170,67 @@ fun TodoText(
     onDoneAction: () -> Unit
 ) {
     if (isEditing) {
-        OutlinedTextField(
-            leadingIcon = {
-                Icon(
-                    imageVector = Icons.Outlined.Edit,
-                    contentDescription = "Task Edit"
-                )
-            },
-            value = text,
-            onValueChange = onTextChange,
-            keyboardOptions = KeyboardOptions.Default.copy(
-                imeAction = ImeAction.Done,
-                capitalization = KeyboardCapitalization.Sentences
-            ),
-            keyboardActions = KeyboardActions(
-                onDone = { onDoneAction() }
-            ),
-            modifier = Modifier.fillMaxWidth()
-                .background(THEME_COLOR_CARD, RoundedCornerShape(16.dp))
-        )
+        Text(text = todo.title, modifier = Modifier.clickable { onTextClick() })
     } else {
         ScrollableText(
             text = text.text,
             isDone = todo.isDone,
             onClick = onTextClick
         )
+    }
+}
+
+@Composable
+fun EditTodoDialog(
+    textFieldValue: TextFieldValue,
+    onTextChange: (TextFieldValue) -> Unit,
+    onDismissRequest: () -> Unit,
+    onDoneAction: () -> Unit
+) {
+    Dialog(
+        properties = DialogProperties(dismissOnBackPress = true, dismissOnClickOutside = true),
+        onDismissRequest = { onDismissRequest() }) {
+        Surface(
+            shape = MaterialTheme.shapes.medium,
+            color = MaterialTheme.colorScheme.surface,
+            shadowElevation = 8.dp,
+            modifier = Modifier.padding(16.dp)
+        ) {
+            Column(
+                modifier = Modifier.padding(16.dp)
+            ) {
+                Text(
+                    text = "Edit Todo",
+                    style = MaterialTheme.typography.headlineMedium,
+                    modifier = Modifier.padding(bottom = 8.dp)
+                )
+                OutlinedTextField(
+                    value = textFieldValue,
+                    onValueChange = onTextChange,
+                    keyboardOptions = KeyboardOptions.Default.copy(
+                        imeAction = ImeAction.Done,
+                        capitalization = KeyboardCapitalization.Sentences
+                    ),
+                    keyboardActions = KeyboardActions(
+                        onDone = { onDoneAction() }
+                    ),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                Row(
+                    horizontalArrangement = Arrangement.End,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    TextButton(onClick = { onDismissRequest() }) {
+                        Text("Cancel")
+                    }
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Button(onClick = { onDoneAction() }) {
+                        Text("Save")
+                    }
+                }
+            }
+        }
     }
 }

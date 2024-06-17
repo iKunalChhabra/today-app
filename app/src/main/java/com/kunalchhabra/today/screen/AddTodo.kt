@@ -1,5 +1,3 @@
-package com.kunalchhabra.today.ui.screen
-
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
@@ -11,6 +9,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.unit.dp
 import com.kunalchhabra.today.ui.theme.SurfaceDark
@@ -33,6 +32,16 @@ fun AddTodo(isDarkTheme: Boolean, onClick: () -> Unit = {}) {
         }
     )
 
+    val offsetX by animateFloatAsState(
+        targetValue = if (isClicked) -300f else 0f,
+        animationSpec = tween(durationMillis = 300, easing = FastOutSlowInEasing)
+    )
+
+    val offsetY by animateFloatAsState(
+        targetValue = if (isClicked) -500f else 0f,
+        animationSpec = tween(durationMillis = 300, easing = FastOutSlowInEasing)
+    )
+
     Button(
         onClick = {
             isClicked = true
@@ -40,7 +49,8 @@ fun AddTodo(isDarkTheme: Boolean, onClick: () -> Unit = {}) {
         modifier = Modifier
             .padding(24.dp)
             .size(72.dp)
-            .scale(scale),
+            .scale(scale)
+            .translate(offsetX, offsetY),
         shape = CircleShape,
         elevation = ButtonDefaults.buttonElevation(10.dp),
         contentPadding = PaddingValues(0.dp)
@@ -59,3 +69,10 @@ fun AddTodo(isDarkTheme: Boolean, onClick: () -> Unit = {}) {
         }
     }
 }
+
+fun Modifier.translate(x: Float, y: Float): Modifier = this.then(
+    Modifier.graphicsLayer {
+        translationX = x
+        translationY = y
+    }
+)
