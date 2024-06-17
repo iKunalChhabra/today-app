@@ -36,6 +36,7 @@ fun TodoItem(todo: TodoEntity, todoViewModel: TodoViewModel) {
     var isDone by remember { mutableStateOf(todo.isDone) }
     var isEditing by remember { mutableStateOf(false) }
     var textFieldValue by remember { mutableStateOf(TextFieldValue(todo.title)) }
+    var currentTextFieldValue  by remember { mutableStateOf(TextFieldValue(todo.title)) }
     val context = LocalContext.current
 
     SwipeToDismiss(
@@ -57,7 +58,7 @@ fun TodoItem(todo: TodoEntity, todoViewModel: TodoViewModel) {
                 todo = todo,
                 isDone = isDone,
                 isEditing = isEditing,
-                textFieldValue = textFieldValue,
+                textFieldValue = currentTextFieldValue,
                 onIconClick = {
                     isDone = !isDone
                     todoViewModel.markAsDone(todo.copy(isDone = isDone))
@@ -80,10 +81,12 @@ fun TodoItem(todo: TodoEntity, todoViewModel: TodoViewModel) {
         EditTodoDialog(
             textFieldValue = textFieldValue,
             onTextChange = { textFieldValue = it },
-            onDismissRequest = { isEditing = false },
+            onDismissRequest = {
+                isEditing = false},
             onDoneAction = {
                 isEditing = false
                 todoViewModel.updateTodoTitle(todo, textFieldValue.text)
+                currentTextFieldValue = textFieldValue
                 Toast.makeText(context, "Task updated!", Toast.LENGTH_SHORT).show()
             }
         )
