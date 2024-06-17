@@ -10,6 +10,8 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.unit.dp
 import com.kunalchhabra.today.ui.theme.SurfaceDark
@@ -19,6 +21,7 @@ import com.kunalchhabra.today.ui.theme.SurfaceLight
 @Composable
 fun AddTodo(isDarkTheme: Boolean, onClick: () -> Unit = {}) {
     val keyboard = LocalSoftwareKeyboardController.current
+    val haptic = LocalHapticFeedback.current
 
     var isClicked by remember { mutableStateOf(false) }
 
@@ -29,22 +32,23 @@ fun AddTodo(isDarkTheme: Boolean, onClick: () -> Unit = {}) {
             isClicked = false
             onClick()
             keyboard?.show()
-        }
+        }, label = ""
     )
 
     val offsetX by animateFloatAsState(
         targetValue = if (isClicked) -300f else 0f,
-        animationSpec = tween(durationMillis = 300, easing = FastOutSlowInEasing)
+        animationSpec = tween(durationMillis = 300, easing = FastOutSlowInEasing), label = ""
     )
 
     val offsetY by animateFloatAsState(
         targetValue = if (isClicked) -500f else 0f,
-        animationSpec = tween(durationMillis = 300, easing = FastOutSlowInEasing)
+        animationSpec = tween(durationMillis = 300, easing = FastOutSlowInEasing), label = ""
     )
 
     Button(
         onClick = {
             isClicked = true
+            haptic.performHapticFeedback(HapticFeedbackType.LongPress)
         },
         modifier = Modifier
             .padding(24.dp)

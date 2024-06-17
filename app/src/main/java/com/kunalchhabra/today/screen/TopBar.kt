@@ -6,7 +6,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.runtime.*
 import androidx.compose.ui.focus.focusRequester
 import android.widget.Toast
-import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.*
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
@@ -81,11 +81,17 @@ fun AddTodoDialog(
 ) {
     val context = LocalContext.current
 
-    AnimatedVisibility(showAddTodo.value) {
+    AnimatedVisibility(
+        showAddTodo.value,
+        enter = slideInVertically(initialOffsetY = { it }) + fadeIn(),
+        exit = slideOutVertically(targetOffsetY = { it }) + fadeOut()
+    ){
         Dialog(
             properties = DialogProperties(dismissOnBackPress = true, dismissOnClickOutside = true),
-            onDismissRequest = { showAddTodo.value = false
-                newTodoValue.value = ""}
+            onDismissRequest = {
+                showAddTodo.value = false
+                newTodoValue.value = ""
+            }
         ) {
             Surface(
                 shape = MaterialTheme.shapes.medium,
@@ -217,7 +223,7 @@ fun ActionIcons(
                 }
         )
         Icon(
-            imageVector = Icons.Outlined.DarkMode,
+            imageVector = if (isDarkTheme) Icons.Outlined.DarkMode else Icons.Outlined.LightMode,
             contentDescription = "Dark Mode",
             modifier = Modifier
                 .size(32.dp)
