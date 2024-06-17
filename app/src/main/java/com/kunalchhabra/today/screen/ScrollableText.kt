@@ -18,6 +18,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import com.kunalchhabra.today.ui.theme.ItimFontFamily
 import com.kunalchhabra.today.ui.theme.SurfaceDark
+import kotlin.random.Random
 
 @Composable
 fun ScrollableText(text: String, isDone: Boolean, onClick: () -> Unit = {}) {
@@ -69,13 +70,13 @@ fun ScrollableText(text: String, isDone: Boolean, onClick: () -> Unit = {}) {
                 while (x < lineWidth * textWidth) {
                     quadraticBezierTo(
                         x1 = x + 10f,
-                        y1 = y - 20f,
+                        y1 = y - 10f,
                         x2 = x + 20f,
                         y2 = y
                     )
                     quadraticBezierTo(
                         x1 = x + 30f,
-                        y1 = y + 20f,
+                        y1 = y + 10f,
                         x2 = x + 40f,
                         y2 = y
                     )
@@ -86,7 +87,7 @@ fun ScrollableText(text: String, isDone: Boolean, onClick: () -> Unit = {}) {
             drawPath(
                 path = path,
                 color = color,
-                style = Stroke(width = 2f, cap = StrokeCap.Round)
+                style = Stroke(width = 8f, cap = StrokeCap.Round)
             )
         }
     }

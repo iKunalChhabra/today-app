@@ -62,4 +62,13 @@ class TodoViewModel @Inject constructor(private val repository: TodoRepository) 
             fetchTodos()  // Update the list after updating the title
         }
     }
+
+    fun moveTodoItem(fromIndex: Int, toIndex: Int) {
+        _todos.update { currentTodos ->
+            val mutableTodos = currentTodos.toMutableList()
+            val item = mutableTodos.removeAt(fromIndex)
+            mutableTodos.add(toIndex, item)
+            mutableTodos.toList()
+        }
+    }
 }
